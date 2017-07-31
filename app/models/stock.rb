@@ -17,12 +17,11 @@ class Stock < ActiveRecord::Base
     end
     
     def price
-       last_price = StockQuote::Stock.quote(ticker).last_trade_price_only
-       return "#{last_price} (Last)" if last_price
+    
+        data = YahooFinance.quotes([ticker], [:close]) 
+
+
+        return "#{data[0].close} (Last)"
        
-       opening_price = StockQuote::Stock.quote(ticker).open
-       return "#{opening_price} (Opening)" if opening_price
-       
-       'Unavailabe'
     end
 end
